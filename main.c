@@ -20,7 +20,7 @@ static void init_joy( void )
 	DDRB  &= ~0x3c;
 	PORTB |=  0x3c;
 	
-	PIND  &= ~0x03;
+	DDRD  &= ~0x03;
 	PORTD |=  0x03;
 }
 

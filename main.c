@@ -7,7 +7,6 @@ Licensed under GPL v2 or later. See License.txt. */
 #include <string.h>
 #include <avr/io.h>
 #include <avr/interrupt.h>
-#include <util/delay.h>
 
 #include "usbdrv/usbdrv.h"
 
@@ -91,22 +90,6 @@ uint8_t usbFunctionSetup( uint8_t data [8] )
 	}
 }
 
-static void init_usb( void )
-{
-	// INT0 = input with no pull-up
-	PORTD &= ~(1<<2);
-	DDRD  &= ~(1<<2);
-	
-	USBOUT &= ~USBMASK;
-	
-	// Force USB re-enumeration in case we're being re-run while connected
-	usbDeviceDisconnect();
-	_delay_ms( 250 );
-	usbDeviceConnect();
-	
-	usbInit();
-}
-
 static void toggle_led( void )
 {
 	DDRC  |= 1;
@@ -115,7 +98,7 @@ static void toggle_led( void )
 
 int main( void )
 {
-	init_usb();
+	usbInit();
 	sei();
 	
 	init_joy();
